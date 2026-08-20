@@ -1,0 +1,456 @@
+{
+  "protocol": "ModbusRTU_Vega_ARM64_V1.1.0",
+  "template": "d:\\项目\\iot-device-model-onboarding\\templates\\ModbusRTU_Vega_ARM64_V1.1.0.xlsx",
+  "model_xlsx": "d:\\项目\\iot-device-model-onboarding\\output\\NJBK8\\NJBK8_设备模型_20260820.xlsx",
+  "output": "d:\\项目\\iot-device-model-onboarding\\output\\NJBK8\\NJBK8_点表_20260820.xlsx",
+  "rows": {
+    "Uab": {
+      "address": "0x1000",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Ubc": {
+      "address": "0x1001",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Uca": {
+      "address": "0x1002",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Ua": {
+      "address": "0x1003",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Ub": {
+      "address": "0x1004",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Uc": {
+      "address": "0x1005",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Un": {
+      "address": "0x1006",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "Ia": {
+      "address": "0x1007",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "Ib": {
+      "address": "0x1009",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "Ic": {
+      "address": "0x100B",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "LeakCurrent": {
+      "address": "0x100D",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "mA"
+    },
+    "GroundCurrent": {
+      "address": "0x100F",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "EP": {
+      "address": "0x1011",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EPI_PhaseA": {
+      "address": "0x1013",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EPI_PhaseB": {
+      "address": "0x1015",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EPI_PhaseC": {
+      "address": "0x1017",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EQI_PhaseA": {
+      "address": "0x1019",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EQI_PhaseB": {
+      "address": "0x101B",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "EQI_PhaseC": {
+      "address": "0x101D",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "KWh"
+    },
+    "Pa": {
+      "address": "0x1021",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Pc": {
+      "address": "0x1025",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Qa": {
+      "address": "0x1029",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Qb": {
+      "address": "0x102B",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Qc": {
+      "address": "0x102D",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Sa": {
+      "address": "0x1031",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Sb": {
+      "address": "0x1033",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "Sc": {
+      "address": "0x1035",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "kvar"
+    },
+    "PFa": {
+      "address": "0x1039",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "PFb": {
+      "address": "0x103B",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "PFc": {
+      "address": "0x103D",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "PhaseAngleA": {
+      "address": "0x103F",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "PhaseAngleB": {
+      "address": "0x1040",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "PhaseAngleC": {
+      "address": "0x1041",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "FundamentalVa": {
+      "address": "0x1042",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "FundamentalVb": {
+      "address": "0x1043",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "FundamentalVc": {
+      "address": "0x1044",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 10.0,
+      "unit": "V"
+    },
+    "FundamentalIa": {
+      "address": "0x1045",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "FundamentalIb": {
+      "address": "0x1047",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "FundamentalIc": {
+      "address": "0x1049",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 1.0,
+      "unit": "A"
+    },
+    "RunTimeNow": {
+      "address": "0x2000",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "u32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "RunTimeAll": {
+      "address": "0x2004",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "u32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "StartNumber": {
+      "address": "0x2008",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "u32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "TripNumber": {
+      "address": "0x200A",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "u32",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "StartCurrentMax": {
+      "address": "0x200C",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 100.0,
+      "unit": ""
+    },
+    "RunCurrentMax": {
+      "address": "0x200E",
+      "registerCount": 2,
+      "functionCode": "[03,00]",
+      "dataType": "float32",
+      "coefficient": 100.0,
+      "unit": ""
+    },
+    "WorkMode": {
+      "address": "0x4000",
+      "registerCount": 1,
+      "functionCode": "[03,06]",
+      "dataType": "u8",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI0": {
+      "address": "0x104B",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI1": {
+      "address": "0x104C",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI2": {
+      "address": "0x104D",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI3": {
+      "address": "0x104E",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI4": {
+      "address": "0x104F",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DI5": {
+      "address": "0x1050",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DO0": {
+      "address": "0x1051",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DO1": {
+      "address": "0x1052",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DO2": {
+      "address": "0x1053",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    },
+    "DO3": {
+      "address": "0x1054",
+      "registerCount": 1,
+      "functionCode": "[03,00]",
+      "dataType": "u16",
+      "coefficient": 1.0,
+      "unit": ""
+    }
+  }
+}
