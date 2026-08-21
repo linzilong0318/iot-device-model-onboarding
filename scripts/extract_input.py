@@ -34,6 +34,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from workspace import resolve_out
+
 
 class InputFormatError(RuntimeError):
     """输入格式不支持或依赖缺失时抛出。
@@ -210,10 +212,9 @@ def main():
     except (InputFormatError, subprocess.CalledProcessError) as exc:
         parser.error(str(exc))
     payload = json.dumps(result, ensure_ascii=False, indent=2)
-    if args.output:
-        Path(args.output).write_text(payload + "\n", encoding="utf-8")
-    else:
-        print(payload)
+    out_path = args.output or resolve_out(basename="extract_output.json")
+    Path(out_path).write_text(payload + "\n", encoding="utf-8")
+    print("saved:", out_path)
 
 
 if __name__ == "__main__":

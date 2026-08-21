@@ -36,11 +36,13 @@ from artifact_contract import (
     atomic_write_json,
     catalog_path_for,
     normalize_datadefine,
+    normalize_enum_datadefine,
     parse_datadefine,
     protocol_family,
     validate_artifact,
     validate_point_groups,
 )
+from workspace import resolve_out
 
 # 工程根目录（scripts 的上一级）
 BASE = Path(__file__).resolve().parent.parent
@@ -164,6 +166,11 @@ def fill_sheet(sheet, rows):
             value = row.get(key)
             if key == "DataDefine":
                 value = normalize_datadefine(value, f"{sheet.title}/{row.get('*ID')}.DataDefine")
+                # ENUM 点位写入时规整为平台导入要求的 mappingItemList + enumKeyCode 格式
+                if row.get("*DataType") == "ENUM":
+                    parsed = parse_datadefine(value, f"{sheet.title}/{row.get('*ID')}.DataDefine")
+                    parsed = normalize_enum_datadefine(parsed)
+                    value = None if parsed is None else json.dumps(parsed, ensure_ascii=False)
             sheet.cell(row=row_index, column=column, value=None if value == "" else value)
 
 
@@ -302,11 +309,20 @@ def generate_model(spec, output=None):
     """
     for warning in validate_artifact(spec, "model_spec"):
         print("WARN:", warning)
-    output = output or spec.get("output")
-    if not output:
-        raise ContractError("未指定输出路径(spec.output 或命令行参数)")
+    output = output or spec.get("output") or resolve_out(basename=f"{spec['model']['id']}.xlsx")
     public_index = parse_raw(spec["raw_doc"])
     ensure_model_references(spec, public_index)
+    # 平台铁律:设备类型中已存在的点位 ID,不得自定义同名点位;
+    # 若想在 add 中"重定义"某测点/属性,必须先确认它不在公有类型对应维度里
+    for dim in ("Attribute", "MeasurePoint"):
+        for row in spec["add"].get(dim, []):
+            pid = row.get("*ID")
+            if pid and pid in public_index[dim]:
+                raise ContractError(
+                    f"model_spec.add.{dim} 点位 {pid} 已在设备类型 {spec['model']['device_type']} "
+                    f"中存在,不得自定义同名点位;如需该点位请从类型 select 引用(接受类型定义的方向/字段),"
+                    f"方向不符时用私有 Service 补下发能力"
+                )
     # 从公有类型索引中按 select 清单提取引用行，并校验存在性与唯一性
     public_rows = {}
     for dim in DIMS:
@@ -377,9 +393,7 @@ def generate_type(spec, output=None):
     """
     for warning in validate_artifact(spec, "type_spec"):
         print("WARN:", warning)
-    output = output or spec.get("output")
-    if not output:
-        raise ContractError("未指定输出路径(spec.output 或命令行参数)")
+    output = output or spec.get("output") or resolve_out(basename=f"{spec['type']['id']}.xlsx")
     workbook = openpyxl.load_workbook(spec.get("template") or TPL_DIR / "type_template.xlsx")
     required_sheets = ["BasicInfo", *DIMS]
     missing_sheets = [name for name in required_sheets if name not in workbook.sheetnames]
@@ -608,10 +622,9 @@ def generate_point_table(spec, output=None):
     """
     for warning in validate_artifact(spec, "point_reg"):
         print("WARN:", warning)
-    output = output or spec.get("output")
-    if not output:
-        raise ContractError("未指定输出路径(spec.output 或命令行参数)")
     protocol = spec["protocol"]
+    output = (output or spec.get("output")
+              or resolve_out(basename=f"{Path(spec['model_xlsx']).stem}_{protocol}.xlsx"))
     template = spec.get("template") or TPL_DIR / f"{protocol}.xlsx"
     if not Path(template).is_file():
         raise ContractError(f"协议模板不存在: {template}")

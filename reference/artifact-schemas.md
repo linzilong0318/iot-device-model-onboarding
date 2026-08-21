@@ -22,12 +22,18 @@ python scripts/validate_artifact.py --type match match.json
 - `MeasurePoint`：`*ID`、`*Name_default`、`*DataType`、`*R/W`。
 - `Event`：`*ID`、`*Name_default`、`*EventType`、`*Output`、`*Condition`。
 - `Service`：`*ID`、`*Name_default`；`*Input` 和 `Output` 可为空。
-- `DataDefine` 存在时为 JSON 对象或数组。`ENUM` 要求非空的 `DataDefine.enum` 对象。非法 JSON 必须报错，而非变成空值。
+- `DataDefine` 存在时为 JSON 对象或数组。非法 JSON 必须报错，而非变成空值。`ENUM` 的 `DataDefine` 必须使用平台导入格式：
+  ```json
+  {"mappingItemList": [{"itemI18nValue": {"default": "正常", "en_US": "Normal"}, "itemValue": "正常", "itemKey": "0"}], "enumKeyCode": "INT"}
+  ```
+  即 `mappingItemList`（每项含 `itemKey`/`itemValue`，`itemI18nValue.default`，`en_US` 可缺省复用 default）+ `enumKeyCode`。旧式 `{"enum": {"0":"正常"}}` 仅作兼容输入，生成器 `fill_sheet` 会在写入 Excel 时自动转换为平台格式（`normalize_enum_datadefine`），因此**交付模型/类型的 ENUM DataDefine 一定为 mappingItemList 格式**。
 - 事件和服务的引用只能解析到 Attribute 和 MeasurePoint 的 ID。同 ID 的事件或服务不满足引用要求。
 
 ## points 与 match
 
 `points` 记录来源设备、来源证据、四个维度数组、推断标记和汇总。推断事件需要证据，且在用户确认前必须标记 `need_user_confirm: true`。`match` 记录相同的设备标识、候选公有类型 ID、按维度的映射和未覆盖点位。两者都要求 `device`；新生产者还需写入通用 schema 字段。
+
+**match 映射条目推荐同时携带 `matched_point`**：对已映射用户点位，除 `matched_type_id`（公有类型）外，还应记下命中的**具体公有点位标识符**（`matched_point`），供 S3 直接构造 `select`。若匹配阶段不记明细，后续需另派补齐步骤，应避免。`matched_point` 必须是公有类型原始定义中真实存在的标识符，不得臆造。
 
 ## model_spec
 

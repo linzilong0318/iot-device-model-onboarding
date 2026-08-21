@@ -180,6 +180,38 @@ def normalize_datadefine(value, where="DataDefine"):
     return None if parsed is None else json.dumps(parsed, ensure_ascii=False)
 
 
+def normalize_enum_datadefine(dd):
+    """把 ENUM 的 DataDefine 规整为平台导入要求的格式。
+
+    平台 ENUM 的 DataDefine 必须是：
+      {"mappingItemList": [{"itemI18nValue": {"default":"..","en_US":".."},
+                            "itemValue":"..", "itemKey":".."}, ...],
+       "enumKeyCode": "INT"}
+
+    旧版格式 {"enum": {"0":"正常","1":"异常"}} 会被自动转换为上述平台格式。
+    已经是平台格式（含 mappingItemList + enumKeyCode）的对象原样返回。
+
+    输入：dd —— 已 parse 的 DataDefine（dict/list/None）
+    输出：转换后的 dict（旧式转为平台格式）或原样返回（新式/非 dict/None）
+    """
+    if not isinstance(dd, dict):
+        return dd
+    if "mappingItemList" in dd and "enumKeyCode" in dd:
+        return dd
+    enum = dd.get("enum")
+    if isinstance(enum, dict) and enum:
+        items = [
+            {
+                "itemI18nValue": {"default": str(val), "en_US": str(val)},
+                "itemValue": str(val),
+                "itemKey": str(key),
+            }
+            for key, val in enum.items()
+        ]
+        return {"mappingItemList": items, "enumKeyCode": "INT"}
+    return dd
+
+
 def validate_point_groups(groups, label="points"):
     """校验四维度点位分组的结构完整性（必填字段、ID 命名、枚举、事件等式等）。
 
@@ -191,7 +223,7 @@ def validate_point_groups(groups, label="points"):
       - 检查每行必填字段是否齐全
       - 检查 *ID 命名规则与维度内唯一性
       - 检查枚举字段取值合法性
-      - 检查 ENUM 数据类型是否有非空 DataDefine.enum
+      - 检查 ENUM 数据类型是否有合法 DataDefine（平台格式 mappingItemList+enumKeyCode；兼容旧式 enum 对象）
       - 检查事件 *Condition 是否为"点位 = 值"等式，且不得用累计计数点位
       - 检查推断事件是否有 user_confirmed=true
       - 检查 Attribute 与 MeasurePoint 无重复 ID
@@ -231,9 +263,30 @@ def validate_point_groups(groups, label="points"):
             try:
                 dd = parse_datadefine(row.get("DataDefine"), f"{where}.DataDefine")
                 if row.get("*DataType") == "ENUM":
-                    enum = dd.get("enum") if isinstance(dd, dict) else None
-                    if not isinstance(enum, dict) or not enum:
-                        errors.append(f"{where} ENUM 必须提供非空 DataDefine.enum 对象")
+                    # 平台 ENUM 格式: {"mappingItemList":[{itemKey,itemValue,...}],"enumKeyCode":"INT"}
+                    # 兼容旧式 {"enum":{key:value}}(生成时会自动转平台格式)
+                    if isinstance(dd, dict) and "mappingItemList" in dd and "enumKeyCode" in dd:
+                        items = dd["mappingItemList"]
+                        if not (isinstance(items, list) and items and all(
+                                isinstance(it, dict) and "itemKey" in it and "itemValue" in it
+                                for it in items)):
+                            errors.append(
+                                f"{where} ENUM DataDefine.mappingItemList 必须是 "
+                                "含 itemKey/itemValue 的非空对象数组")
+                    elif isinstance(dd, dict) and isinstance(dd.get("enum"), dict) and dd["enum"]:
+                        pass  # 旧式格式, 兼容; 生成时自动转平台格式
+                    else:
+                        errors.append(
+                            f"{where} ENUM 必须提供 DataDefine "
+                            "(平台格式: mappingItemList + enumKeyCode)")
+                elif dim in ("Attribute", "MeasurePoint") and row.get("*DataType") in ("INT", "FLOAT"):
+                    # 平台铁律:数值类型(INT/FLOAT)必须带 DataDefine 定义 min/max;
+                    # 范围未知时可填 {"minValue":"","maxValue":""},但 DataDefine 不能缺失
+                    if dd is None or not isinstance(dd, dict):
+                        errors.append(
+                            f"{where} {row.get('*DataType')} 数值类型必须提供 DataDefine "
+                            "(含 minValue/maxValue;范围未知填 {\"minValue\":\"\",\"maxValue\":\"\"})"
+                        )
             except ContractError as exc:
                 errors.append(str(exc))
             if dim == "Event" and row.get("*Condition"):
